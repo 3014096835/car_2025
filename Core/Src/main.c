@@ -20,11 +20,11 @@
 #include "main.h"
 #include "tim.h"
 #include "gpio.h"
-#include "OLED.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "OLED.h"
+#include "OLED_Data.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -81,9 +81,8 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
-
   /* USER CODE BEGIN SysInit */
-  OLED_Init();
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -92,13 +91,16 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
   uint8_t value = 0;
+  OLED_Init();
+  OLED_Clear();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    OLED_ShowChar(1,1,'a',16);
+    OLED_ShowChar(25, 25, 'H', OLED_8X16);
+    OLED_Update();
     HAL_GPIO_WritePin(M1_B_GPIO_Port, M1_B_Pin, GPIO_PIN_SET);
     /*if(Key_Num == 1)
     {
