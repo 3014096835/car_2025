@@ -20,7 +20,7 @@
 #include "main.h"
 #include "tim.h"
 #include "gpio.h"
-#include "key.h"
+#include "OLED.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -83,7 +83,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  OLED_Init();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -98,21 +98,34 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_GPIO_WritePin(M1_B_GPIO_Port, M1_B_Pin, GPIO_PIN_RESET);
-    if(key() == 1)
+    OLED_ShowChar(1,1,'a',16);
+    HAL_GPIO_WritePin(M1_B_GPIO_Port, M1_B_Pin, GPIO_PIN_SET);
+    /*if(Key_Num == 1)
     {
-      value+=100;
+      if (value >= 500)
+      {
+        value=500;
+      }else
+      {
+        value+=100;
+      }
     }
-    if(key() == 2)
+    if(Key_Num == 2)
     {
-      value-=100;
-    }
+      if (value <= 0)
+      {
+        value=0;
+      }else
+      {
+        value-=100;
+      }
+    }*/
     __HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,value);
-
+  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+
   /* USER CODE END 3 */
 }
 

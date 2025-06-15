@@ -1,10 +1,6 @@
-//
-// Created by 30140 on 25-6-8.
-//
+#ifndef __KEY_H
+#define __KEY_H
 
-#ifndef KEY_H
-#define KEY_H
-#include "main.h"
 
-uint8_t key(void);
-#endif //KEY_H
+#endif
+
