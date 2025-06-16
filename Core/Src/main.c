@@ -47,6 +47,7 @@
 /* USER CODE BEGIN PV */
 uint16_t value = 0;
 uint8_t Key_Value;
+uint32_t M1_Speed = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,11 +92,15 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM3_Init();
   MX_TIM1_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_3);
+
+  HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_1);
+  HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_2);
   OLED_Init();
   OLED_Printf(0,0,OLED_8X16,"key:");
   /* USER CODE END 2 */
@@ -104,8 +109,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    M1_Speed = __HAL_TIM_GET_COUNTER(&htim4);
     Key_Value = Scan_Key();
     OLED_ShowNum(40,0,value,4,OLED_8X16);
+    OLED_ShowNum(0,16,M1_Speed,5,OLED_8X16);
     OLED_Update();
     HAL_GPIO_WritePin(M1_B_GPIO_Port, M1_B_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(M2_B_GPIO_Port, M2_B_Pin, GPIO_PIN_SET);
