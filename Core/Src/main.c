@@ -25,7 +25,6 @@
 /* USER CODE BEGIN Includes */
 #include "key.h"
 #include "OLED.h"
-#include "OLED_Data.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -83,6 +82,7 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
+
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
@@ -90,11 +90,16 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM3_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_3);
   OLED_Init();
-  /* USER CODE END 2 */
   OLED_Printf(0,0,OLED_8X16,"key:");
+  /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -103,6 +108,10 @@ int main(void)
     OLED_ShowNum(40,0,value,4,OLED_8X16);
     OLED_Update();
     HAL_GPIO_WritePin(M1_B_GPIO_Port, M1_B_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(M2_B_GPIO_Port, M2_B_Pin, GPIO_PIN_SET);
+
+    HAL_GPIO_WritePin(M3_B_GPIO_Port, M3_B_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(M4_B_GPIO_Port, M4_B_Pin, GPIO_PIN_RESET);
     if (Key_Value == 1)
     {
       value += 100;
@@ -115,7 +124,11 @@ int main(void)
     {
       value = 0;
     }
-    __HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,value);
+
+    __HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,value);//M1_A
+    __HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_3,value);
+    __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_1,value);
+    __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_3,value);
   }
     /* USER CODE END WHILE */
 

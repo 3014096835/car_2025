@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(stm32cubemx)
-add_library(stm32cubemx INTERFACE
-		../../Core/Src/OLED.c
-		../../Core/Src/OLED_Data.h
-		../../Core/Src/OLED_Data.c
-		../../Core/Src/OLED.h)
+add_library(stm32cubemx INTERFACE)
 
 # Enable CMake support for ASM and C languages
 enable_language(C ASM)
