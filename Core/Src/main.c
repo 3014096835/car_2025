@@ -23,6 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "key.h"
 #include "OLED.h"
 #include "OLED_Data.h"
 /* USER CODE END Includes */
@@ -45,7 +46,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint16_t value = 0;
+uint8_t Key_Value;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,38 +92,29 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
-  uint8_t value = 0;
   OLED_Init();
-  OLED_Clear();
   /* USER CODE END 2 */
-
+  OLED_Printf(0,0,OLED_8X16,"key:");
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    OLED_ShowChar(25, 25, 'H', OLED_8X16);
+    Key_Value = Scan_Key();
+    OLED_ShowNum(40,0,value,4,OLED_8X16);
     OLED_Update();
     HAL_GPIO_WritePin(M1_B_GPIO_Port, M1_B_Pin, GPIO_PIN_SET);
-    /*if(Key_Num == 1)
+    if (Key_Value == 1)
     {
-      if (value >= 500)
-      {
-        value=500;
-      }else
-      {
-        value+=100;
-      }
+      value += 100;
     }
-    if(Key_Num == 2)
+    if (Key_Value == 2)
     {
-      if (value <= 0)
-      {
-        value=0;
-      }else
-      {
-        value-=100;
-      }
-    }*/
+      value -= 100;
+    }
+    if (Key_Value == 3)
+    {
+      value = 0;
+    }
     __HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_1,value);
   }
     /* USER CODE END WHILE */
